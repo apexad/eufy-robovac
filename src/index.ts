@@ -230,17 +230,22 @@ export class RoboVac {
 		});
 	}
 
-	async findRobot() {
+	async setFindRobot(state: boolean) {
 		await this.doWork(async () => {
 			await this.set({
-				[this.FIND_ROBOT]: true
+				[this.FIND_ROBOT]: state
 			})
 		});
 	}
 
+	async getFindRobot(force: boolean = false) {
+		let statuses = await this.getStatuses(force);
+		return <boolean>statuses.dps[this.FIND_ROBOT];
+	}
+
 	async getBatteyLevel(force: boolean = false) {
 		let statuses = await this.getStatuses(force);
-		return <WorkStatus>statuses.dps[this.BATTERY_LEVEL];
+		return <number>statuses.dps[this.BATTERY_LEVEL];
 	}
 
 	async getErrorCode(force: boolean = false): Promise<ErrorCode> {
