@@ -18,7 +18,7 @@ module.exports = {
 			'src',
 			'node_modules'
 		],
-		extensions: ['.ts', '.js' ]
+		extensions: ['.ts', '.js', '.json' ]
 	},
 	output: {
 		filename: 'index.js',
