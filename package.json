@@ -6,6 +6,7 @@
 	"types": "dist/index.d.js",
 	"scripts": {
 		"build": "webpack",
+		"prepublishOnly": "npm run build",
 		"demo": "node demo.js"
 	},
 	"repository": {
