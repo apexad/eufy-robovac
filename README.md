@@ -4,7 +4,7 @@ NodeJS library to control Eufy RoboVac. This library relies heavily on [TuyAPI](
 
 ## Required Information
 
-* RoboVac Device Id OR IP address of RoboVac
+* RoboVac Device Id
 * RoboVac localKey
 
 You can get both pieces of information by using logcat to "sniff" the data on an android phone OR emulator.
@@ -31,7 +31,7 @@ To test out if this library can talk to your RoboVac follow the steps below:
 git clone git@github.com:joshstrange/eufy-robovac.git
 cd eufy-robovac
 npm install
-npm run demo <deviceId | ipAddress> <localKey> <command>
+npm run demo <deviceId> <localKey> <command>
 ```
 
 Where command is either "quickTest" or "status". The `quickTest` command will:
@@ -59,7 +59,6 @@ npm install --save eufy-robovac
 ```
 
 I will try to keep the npm package updated. Also the type definitions for TypeScript are included.
-
 
 ## Development
 
