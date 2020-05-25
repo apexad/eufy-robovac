@@ -1,4 +1,4 @@
-const TuyAPI = require('tuyapi');
+import TuyAPI from 'tuyapi';
 
 export enum CleanSpeed {
 	NO_SUCTION = 'No_suction',
@@ -107,33 +107,33 @@ export class RoboVac {
 
 		this.api.on('disconnected', () => {
 			this.connected = false;
-			console.log("Disconnected!");
+			console.log('Disconnected!');
 		});
 
 		this.api.on('data', (data: StatusResponse) => {
 			this.statuses = data;
 			this.lastStatusUpdate = (new Date()).getTime();
-			console.log("Status Updated!")
+			console.log('Status Updated!');
 		});
 
 	}
 
 	async connect() {
 		if(!this.connected) {
-			console.log("Connecting...");
+			console.log('Connecting...');
 			await this.api.connect();
 
 		}
 	}
 
 	async disconnect() {
-		console.log("Disconnecting...");
+		console.log('Disconnecting...');
 		await this.api.disconnect();
 	}
 
 	async doWork(work: () => Promise<any>): Promise<any> {
 		if(!this.api.device.id || !this.api.device.ip) {
-			console.log("Looking for device...");
+			console.log('Looking for device...');
 			await this.api.find();
 			console.log(`Found device ${this.api.device.id} at ${this.api.device.ip}`);
 		}
@@ -194,7 +194,7 @@ export class RoboVac {
 
 	async setWorkMode(workMode: WorkMode) {
 		await this.doWork(async () => {
-			console.log("Setting WorkMode to " + workMode);
+			console.log(`Setting WorkMode to ${workMode}`);
 			await this.set({
 				[this.WORK_MODE]: workMode
 			})
@@ -202,10 +202,10 @@ export class RoboVac {
 	}
 
 	async startCleaning(force: boolean = false) {
-		console.log("Starting Cleaning");
+		console.log('Starting Cleaning');
 		console.log(JSON.stringify(await this.getStatuses(force), null, 4));
 		await this.setWorkMode(WorkMode.AUTO);
-		console.log("Cleaning Started!");
+		console.log('Cleaning Started!');
 	}
 
 	async getWorkStatus(force: boolean = false): Promise<WorkStatus> {
@@ -253,7 +253,7 @@ export class RoboVac {
 	}
 
 	async set(data: { [key: string]: string | number | boolean }) {
-		console.log("Setting: " + JSON.stringify(data, null, 4));
+		console.log(`Setting: ${JSON.stringify(data, null, 4)}`);
 		await this.api.set({
 			multiple: true,
 			data: data
@@ -261,16 +261,15 @@ export class RoboVac {
 	}
 
 	formatStatus() {
-		console.log("-- Status Start --");
-		console.log(" - Play/Pause: " + (this.statuses.dps as any)[this.PLAY_PAUSE]);
-		console.log(" - Direction: " + (this.statuses.dps as any)[this.DIRECTION]);
-		console.log(" - Work Mode: " + (this.statuses.dps as any)[this.WORK_MODE]);
-		console.log(" - Go Home: " + (this.statuses.dps as any)[this.GO_HOME]);
-		console.log(" - Clean Speed: " + (this.statuses.dps as any)[this.CLEAN_SPEED]);
-		console.log(" - Find Robot: " + (this.statuses.dps as any)[this.FIND_ROBOT]);
-		console.log(" - Battery Level: " + (this.statuses.dps as any)[this.BATTERY_LEVEL]);
-		console.log(" - Error Code: " + (this.statuses.dps as any)[this.ERROR_CODE]);
-		console.log("-- Status End --");
+		console.log('-- Status Start --');
+		console.log(` - Play/Pause: ${(this.statuses.dps as any)[this.PLAY_PAUSE]}`);
+		console.log(` - Direction: ${(this.statuses.dps as any)[this.DIRECTION]}`);
+		console.log(` - Work Mode: ${(this.statuses.dps as any)[this.WORK_MODE]}`);
+		console.log(` - Go Home: ${(this.statuses.dps as any)[this.GO_HOME]}`);
+		console.log(` - Clean Speed: ${(this.statuses.dps as any)[this.CLEAN_SPEED]}`);
+		console.log(` - Find Robot: ${(this.statuses.dps as any)[this.FIND_ROBOT]}`);
+		console.log(` - Battery Level: ${(this.statuses.dps as any)[this.BATTERY_LEVEL]}`);
+		console.log(` - Error Code: ${(this.statuses.dps as any)[this.ERROR_CODE]}`);
+		console.log('-- Status End --');
 	}
-
 }
