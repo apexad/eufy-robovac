@@ -80,12 +80,14 @@ export class RoboVac {
 	ERROR_CODE = '106';
 
 	connected: boolean = false;
+	debugLog: boolean;
 
 	statuses: StatusResponse = null;
 	lastStatusUpdate: number = null;
 	maxStatusUpdateAge: number = 30 * 1000; //10 Seconds
 
-	constructor(config: { deviceId?: string, localKey: string }) {
+	constructor(config: { deviceId: string, localKey: string }, debugLog: boolean = false) {
+		this.debugLog = debugLog;
 		if(!config.deviceId) {
 			throw new Error('You must pass through deviceId');
 		}
@@ -97,45 +99,61 @@ export class RoboVac {
 		);
 
 		this.api.on('error', (error: any) => {
-			console.error(JSON.stringify(error, null, 4));
+			if (debugLog) {
+				console.error('Robovac Error', JSON.stringify(error, null, 4));
+			}
 		});
 
 		this.api.on('connected', () => {
 			this.connected = true;
-			console.log("Connected!");
+			if (debugLog) {
+				console.log("Connected!");
+			}
 		});
 
 		this.api.on('disconnected', () => {
 			this.connected = false;
-			console.log('Disconnected!');
+			if (debugLog) {
+				console.log('Disconnected!');
+			}
 		});
 
 		this.api.on('data', (data: StatusResponse) => {
 			this.statuses = data;
 			this.lastStatusUpdate = (new Date()).getTime();
-			console.log('Status Updated!');
+			if (debugLog) {
+				console.log('Status Updated!');
+			}
 		});
 
 	}
 
 	async connect() {
 		if(!this.connected) {
-			console.log('Connecting...');
+			if (this.debugLog) {
+				console.log('Connecting...');
+			}
 			await this.api.connect();
 
 		}
 	}
 
 	async disconnect() {
-		console.log('Disconnecting...');
+		if (this.debugLog) {
+			console.log('Disconnecting...');
+		}
 		await this.api.disconnect();
 	}
 
 	async doWork(work: () => Promise<any>): Promise<any> {
 		if(!this.api.device.id || !this.api.device.ip) {
-			console.log('Looking for device...');
+			if (this.debugLog) {
+				console.log('Looking for device...');
+			}
 			await this.api.find();
-			console.log(`Found device ${this.api.device.id} at ${this.api.device.ip}`);
+			if (this.debugLog) {
+				console.log(`Found device ${this.api.device.id} at ${this.api.device.ip}`);
+			}
 		}
 		await this.connect();
 		return await work();
@@ -194,7 +212,9 @@ export class RoboVac {
 
 	async setWorkMode(workMode: WorkMode) {
 		await this.doWork(async () => {
-			console.log(`Setting WorkMode to ${workMode}`);
+			if (this.debugLog) {
+				console.log(`Setting WorkMode to ${workMode}`);
+			}
 			await this.set({
 				[this.WORK_MODE]: workMode
 			})
@@ -202,10 +222,14 @@ export class RoboVac {
 	}
 
 	async startCleaning(force: boolean = false) {
-		console.log('Starting Cleaning');
-		console.log(JSON.stringify(await this.getStatuses(force), null, 4));
+		if (this.debugLog) {
+			console.log('Starting Cleaning', JSON.stringify(await this.getStatuses(force), null, 4));
+		}
 		await this.setWorkMode(WorkMode.AUTO);
-		console.log('Cleaning Started!');
+
+		if (this.debugLog) {
+			console.log('Cleaning Started!');
+		}
 	}
 
 	async getWorkStatus(force: boolean = false): Promise<WorkStatus> {
@@ -253,7 +277,9 @@ export class RoboVac {
 	}
 
 	async set(data: { [key: string]: string | number | boolean }) {
-		console.log(`Setting: ${JSON.stringify(data, null, 4)}`);
+		if (this.debugLog) {
+			console.log(`Setting: ${JSON.stringify(data, null, 4)}`);
+		}
 		await this.api.set({
 			multiple: true,
 			data: data
@@ -261,15 +287,17 @@ export class RoboVac {
 	}
 
 	formatStatus() {
-		console.log('-- Status Start --');
-		console.log(` - Play/Pause: ${(this.statuses.dps as any)[this.PLAY_PAUSE]}`);
-		console.log(` - Direction: ${(this.statuses.dps as any)[this.DIRECTION]}`);
-		console.log(` - Work Mode: ${(this.statuses.dps as any)[this.WORK_MODE]}`);
-		console.log(` - Go Home: ${(this.statuses.dps as any)[this.GO_HOME]}`);
-		console.log(` - Clean Speed: ${(this.statuses.dps as any)[this.CLEAN_SPEED]}`);
-		console.log(` - Find Robot: ${(this.statuses.dps as any)[this.FIND_ROBOT]}`);
-		console.log(` - Battery Level: ${(this.statuses.dps as any)[this.BATTERY_LEVEL]}`);
-		console.log(` - Error Code: ${(this.statuses.dps as any)[this.ERROR_CODE]}`);
-		console.log('-- Status End --');
+		console.log(`
+		-- Status Start --
+		 - Play/Pause: ${(this.statuses.dps as any)[this.PLAY_PAUSE]}
+		 - Direction: ${(this.statuses.dps as any)[this.DIRECTION]}
+		 - Work Mode: ${(this.statuses.dps as any)[this.WORK_MODE]}
+		 - Go Home: ${(this.statuses.dps as any)[this.GO_HOME]}
+		 - Clean Speed: ${(this.statuses.dps as any)[this.CLEAN_SPEED]}
+		 - Find Robot: ${(this.statuses.dps as any)[this.FIND_ROBOT]}
+		 - Battery Level: ${(this.statuses.dps as any)[this.BATTERY_LEVEL]}
+		 - Error Code: ${(this.statuses.dps as any)[this.ERROR_CODE]}
+		-- Status End --
+		`);
 	}
 }
