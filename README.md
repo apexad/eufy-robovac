@@ -8,7 +8,7 @@ NodeJS library to control Eufy RoboVac. This library relies heavily on [TuyAPI](
 * RoboVac localKey
 
 You can get both pieces of information by using logcat to "sniff" the data on an android phone OR emulator.
-This is known to work on [Eufy Home v2.3.2](https://www.apkmirror.com/apk/anker/eufyhome/eufyhome-2-3-2-release/eufyhome-2-3-2-android-apk-download/)
+This is known to work on [Eufy Home v2.3.2](https://www.apkmirror.com/apk/anker/eufyhome/eufyhome-2-3-2-release/eufyhome-2-3-2-android-apk-download/) (click the link to download the apk)
 
 > More detailed steps on using logcat:
   
