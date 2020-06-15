@@ -19,7 +19,7 @@ if(process.argv.length !== 5) {
 	};
 
 	try {
-		let r = new RoboVac(config);
+		let r = new RoboVac(config, true);
 		if(process.argv[4] === 'status') {
 			await r.getStatuses();
 			r.formatStatus();
