@@ -3,8 +3,8 @@ let lib = require('./dist/index');
 const RoboVac = lib.RoboVac;
 
 if(process.argv.length !== 5) {
-	console.error("You must pass at least 3 params:");
-	console.log("npm run demo <deviceId | ipAddress> <localKey> <command>");
+	console.error("You must pass at 3 params:");
+	console.log("npm run demo <deviceId> <localKey> <command>");
 	console.log("");
 	console.log("Available Commands:");
 	console.log("status - Prints current statuses");
@@ -14,15 +14,9 @@ if(process.argv.length !== 5) {
 
 (async () => {
 	let config = {
+		deviceId: process.argv[2],
 		localKey: process.argv[3]
 	};
-
-	// Hacky ip check, if device id's ever have periods in them this could be an issue
-	if(process.argv[2].indexOf('.') !== -1) {
-		config.ip = process.argv[2];
-	} else {
-		config.deviceId = process.argv[2];
-	}
 
 	try {
 		let r = new RoboVac(config);
