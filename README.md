@@ -31,6 +31,7 @@ To test out if this library can talk to your RoboVac follow the steps below:
 git clone git@github.com:joshstrange/eufy-robovac.git
 cd eufy-robovac
 npm install
+npm run build
 npm run demo <deviceId> <localKey> <command>
 ```
 
