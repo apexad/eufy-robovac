@@ -20,7 +20,7 @@ This is known to work on [Eufy Home v2.3.2](https://www.apkmirror.com/apk/anker/
 
 HUGE THANKS to [mitchellrj](https://github.com/mitchellrj) for [figuring this out](https://github.com/google/python-lakeside/issues/16#issuecomment-484792907)!
 
-I had to use `adb shell logcat -e 'tuya.m.my.group.device.list'` on my Mac running BlueStacks emulator to get it to work but your mileage may vary. You may also not need to run BlueStacks but it was the easiest method for me. I installed the [EufyHome](https://play.google.com/store/apps/details?id=com.eufylife.smarthome) into the emulator and logged in and was able to grab my id/key.
+I had to use `adb shell logcat -e 'tuya.m.my.group.device.list'` on my Mac running BlueStacks emulator to get it to work but your mileage may vary. You may also not need to run BlueStacks but it was the easiest method for me. I installed the [EufyHome](https://play.google.com/store/apps/details?id=com.eufylife.smarthome) into the emulator and logged in and was able to grab my id/key. Be sure to setup BlueStacks correctly (see [#12](https://github.com/joshstrange/eufy-robovac/issues/12))
 
 
 ## Demo
