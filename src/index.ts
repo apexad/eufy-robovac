@@ -134,7 +134,6 @@ export class RoboVac {
 				console.log('Connecting...');
 			}
 			await this.api.connect();
-
 		}
 	}
 
@@ -150,9 +149,13 @@ export class RoboVac {
 			if (this.debugLog) {
 				console.log('Looking for device...');
 			}
-			await this.api.find();
-			if (this.debugLog) {
-				console.log(`Found device ${this.api.device.id} at ${this.api.device.ip}`);
+			try {
+				await this.api.find({ timeout: 2 });
+				if (this.debugLog) {
+					console.log(`Found device ${this.api.device.id} at ${this.api.device.ip}`);
+				}
+			} catch(err) {
+				console.log(err);
 			}
 		}
 		await this.connect();
