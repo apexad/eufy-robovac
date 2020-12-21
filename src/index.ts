@@ -85,8 +85,9 @@ export class RoboVac {
 	statuses: StatusResponse = null;
 	lastStatusUpdate: number = null;
 	maxStatusUpdateAge: number = 30 * 1000; //10 Seconds
+	timeoutDuration: number;
 
-	constructor(config: { deviceId: string, localKey: string }, debugLog: boolean = false) {
+	constructor(config: { deviceId: string, localKey: string }, debugLog: boolean = false, timeoutDuration = 2) {
 		this.debugLog = debugLog;
 		if(!config.deviceId) {
 			throw new Error('You must pass through deviceId');
@@ -97,6 +98,7 @@ export class RoboVac {
 				key: config.localKey
 			}
 		);
+		this.timeoutDuration = timeoutDuration;
 
 		this.api.on('error', (error: any) => {
 			if (debugLog) {
@@ -150,7 +152,7 @@ export class RoboVac {
 				console.log('Looking for device...');
 			}
 			try {
-				await this.api.find({ timeout: 2 });
+				await this.api.find({ timeout: this.timeoutDuration });
 				if (this.debugLog) {
 					console.log(`Found device ${this.api.device.id} at ${this.api.device.ip}`);
 				}
