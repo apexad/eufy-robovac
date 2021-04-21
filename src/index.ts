@@ -46,7 +46,8 @@ export enum WorkMode {
 	NO_SWEEP = 'Nosweep',
 	SMALL_ROOM = 'SmallRoom',
 	EDGE = 'Edge',
-	SPOT = 'Spot'
+	SPOT = 'Spot',
+    CHARGING = 'Charging'
 }
 
 export interface StatusResponse {
@@ -84,10 +85,10 @@ export class RoboVac {
 
 	statuses: StatusResponse = null;
 	lastStatusUpdate: number = null;
-	maxStatusUpdateAge: number = 30 * 1000; //10 Seconds
+	maxStatusUpdateAge: number = 1000 * (1 * 30); //30 Seconds
 	timeoutDuration: number;
 
-	constructor(config: { deviceId: string, localKey: string }, debugLog: boolean = false, timeoutDuration = 2) {
+	constructor(config: { deviceId: string, localKey: string, ip: string, port: 6668 }, debugLog: boolean = false, timeoutDuration = 2) {
 		this.debugLog = debugLog;
 		if(!config.deviceId) {
 			throw new Error('You must pass through deviceId');
@@ -95,7 +96,11 @@ export class RoboVac {
 		this.api = new TuyAPI(
 			{
 				id: config.deviceId,
-				key: config.localKey
+				key: config.localKey,
+                ip: config.ip,
+                port: config.port,
+                version: '3.3',
+                issueRefreshOnConnect: true
 			}
 		);
 		this.timeoutDuration = timeoutDuration;
@@ -120,10 +125,16 @@ export class RoboVac {
 			}
 		});
 
+        this.api.on('dp-refresh', data => {
+            if (debugLog) {
+                console.log('DP_REFRESH data from device: ', data);
+				console.log('Status Updated!');
+			}
+        });
+
 		this.api.on('data', (data: StatusResponse) => {
-			this.statuses = data;
-			this.lastStatusUpdate = (new Date()).getTime();
 			if (debugLog) {
+                console.log('Data from device:', data);
 				console.log('Status Updated!');
 			}
 		});
@@ -237,6 +248,17 @@ export class RoboVac {
 		}
 	}
 
+    async startCharging(force: boolean = false) {
+		if (this.debugLog) {
+			console.log('Starting Charging', JSON.stringify(await this.getStatuses(force), null, 4));
+		}
+		await this.setWorkMode(WorkMode.CHARGING);
+
+		if (this.debugLog) {
+			console.log('Cleaning Started!');
+		}
+	}
+
 	async getWorkStatus(force: boolean = false): Promise<WorkStatus> {
 		let statuses = await this.getStatuses(force);
 		return <WorkStatus>statuses.dps[this.WORK_STATUS];
@@ -259,7 +281,7 @@ export class RoboVac {
 	}
 
 	async setFindRobot(state: boolean) {
-		await this.doWork(async () => {
+		return await this.doWork(async () => {
 			await this.set({
 				[this.FIND_ROBOT]: state
 			})
@@ -285,9 +307,10 @@ export class RoboVac {
 		if (this.debugLog) {
 			console.log(`Setting: ${JSON.stringify(data, null, 4)}`);
 		}
-		await this.api.set({
+		return await this.api.set({
 			multiple: true,
-			data: data
+			data: data,
+            shouldWaitForResponse: true
 		});
 	}
 
