@@ -47,7 +47,7 @@ export enum WorkMode {
 	SMALL_ROOM = 'SmallRoom',
 	EDGE = 'Edge',
 	SPOT = 'Spot',
-    CHARGING = "Charging"
+    CHARGING = 'Charging'
 }
 
 export interface StatusResponse {
@@ -85,7 +85,7 @@ export class RoboVac {
 
 	statuses: StatusResponse = null;
 	lastStatusUpdate: number = null;
-	maxStatusUpdateAge: number = 1000 * (1 * 60); //60 Seconds
+	maxStatusUpdateAge: number = 1000 * (1 * 30); //30 Seconds
 	timeoutDuration: number;
 
 	constructor(config: { deviceId: string, localKey: string, ip: string, port: number }, debugLog: boolean = false, timeoutDuration = 2) {
