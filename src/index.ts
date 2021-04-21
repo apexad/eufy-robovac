@@ -88,7 +88,7 @@ export class RoboVac {
 	maxStatusUpdateAge: number = 1000 * (1 * 30); //30 Seconds
 	timeoutDuration: number;
 
-	constructor(config: { deviceId: string, localKey: string, ip: string, port: number }, debugLog: boolean = false, timeoutDuration = 2) {
+	constructor(config: { deviceId: string, localKey: string, ip: string, port: 6668 }, debugLog: boolean = false, timeoutDuration = 2) {
 		this.debugLog = debugLog;
 		if(!config.deviceId) {
 			throw new Error('You must pass through deviceId');
