@@ -46,8 +46,7 @@ export enum WorkMode {
     NO_SWEEP = 'Nosweep',
     SMALL_ROOM = 'SmallRoom',
     EDGE = 'Edge',
-    SPOT = 'Spot',
-    CHARGING = 'Charging'
+    SPOT = 'Spot'
 }
 
 export interface StatusResponse {
@@ -242,17 +241,6 @@ export class RoboVac {
             console.log('Starting Cleaning', JSON.stringify(await this.getStatuses(force), null, 4));
         }
         await this.setWorkMode(WorkMode.AUTO);
-
-        if (this.debugLog) {
-            console.log('Cleaning Started!');
-        }
-    }
-
-    async startCharging(force: boolean = false) {
-        if (this.debugLog) {
-            console.log('Starting Charging', JSON.stringify(await this.getStatuses(force), null, 4));
-        }
-        await this.setWorkMode(WorkMode.CHARGING);
 
         if (this.debugLog) {
             console.log('Cleaning Started!');
