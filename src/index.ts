@@ -297,8 +297,7 @@ export class RoboVac {
         }
         return await this.api.set({
             multiple: true,
-            data: data,
-            shouldWaitForResponse: true
+            data: data
         });
     }
 
