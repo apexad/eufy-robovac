@@ -2,7 +2,7 @@ let lib = require('./dist/index');
 
 const RoboVac = lib.RoboVac;
 
-if(process.argv.length !== 5) {
+if(process.argv.length !== 6) {
 	console.error("You must pass at 3 params:");
 	console.log("npm run demo <deviceId> <localKey> <command>");
 	console.log("");
@@ -15,16 +15,17 @@ if(process.argv.length !== 5) {
 (async () => {
 	let config = {
 		deviceId: process.argv[2],
-		localKey: process.argv[3]
+		localKey: process.argv[3],
+        ip: process.argv[4]
 	};
 
 	try {
 		let r = new RoboVac(config, true);
-		if(process.argv[4] === 'status') {
+		if(process.argv[5] === 'status') {
 			await r.getStatuses();
 			r.formatStatus();
 			await r.disconnect();
-		} else if(process.argv[4] === 'quickTest') {
+		} else if(process.argv[5] === 'quickTest') {
 			await r.getStatuses();
 			r.formatStatus();
 			console.log("Demo: startCleaning");
@@ -38,7 +39,7 @@ if(process.argv.length !== 5) {
 			await sleep(2000);
 			await r.disconnect();
 		} else {
-			console.error("Unknown command: " + process.argv[4]);
+			console.error("Unknown command: " + process.argv[5]);
 			process.exit(0);
 		}
 	} catch (error) {
