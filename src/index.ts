@@ -1,52 +1,52 @@
 import TuyAPI from 'tuyapi';
 
 export enum CleanSpeed {
-    NO_SUCTION = 'No_suction',
     STANDARD = 'Standard',
     BOOST_IQ = 'Boost_IQ',
-    MAX = 'Max'
+    MAX = 'Max',
+    NO_SUCTION = 'No_suction'
 }
 
 export enum ErrorCode {
     NO_ERROR = 'no_error',
-    WHEEL_STUCK = 'Wheel_stuck',
-    R_BRUSH_STUCK = 'R_brush_stuck',
+    STUCK_5_MIN = 'Stuck_5_min',
     CRASH_BAR_STUCK = 'Crash_bar_stuck',
     SENSOR_DIRTY = 'sensor_dirty',
     NOT_ENOUGH_POWER = 'N_enough_pow',
-    STUCK_5_MIN = 'Stuck_5_min',
+    WHEEL_STUCK = 'Wheel_stuck',
+    S_BRUSH_STUCK = 'S_brush_stuck',
     FAN_STUCK = 'Fan_stuck',
-    S_BRUSH_STUCK = 'S_brush_stuck'
+    R_BRUSH_STUCK = 'R_brush_stuck'
 }
 
 export enum WorkStatus {
     // Cleaning
     RUNNING = 'Running',
-    // In the dock, charging
-    CHARGING = 'Charging',
     // Not in the dock, paused
     STAND_BY = 'standby',
     // Not in the dock - goes into this state after being paused for a while
     SLEEPING = 'Sleeping',
-    // Going home because battery is depleted
-    RECHARGE_NEEDED = 'Recharge',
+    // In the dock, charging
+    CHARGING = 'Charging',
     // In the dock, full charged
-    COMPLETED = 'completed'
+    COMPLETED = 'completed',
+    // Going home because battery is depleted or home was pressed
+    RECHARGE_NEEDED = 'Recharge'
 }
 
 export enum Direction {
-    LEFT = 'left',
-    RIGHT = 'right',
     FORWARD = 'forward',
-    BACKWARD = 'backward'
+    BACKWARD = 'backward',
+    LEFT = 'left',
+    RIGHT = 'right'
 }
 
 export enum WorkMode {
     AUTO = 'auto',
-    NO_SWEEP = 'Nosweep',
     SMALL_ROOM = 'SmallRoom',
+    SPOT = 'Spot',
     EDGE = 'Edge',
-    SPOT = 'Spot'
+    NO_SWEEP = 'Nosweep'
 }
 
 export interface StatusResponse {
