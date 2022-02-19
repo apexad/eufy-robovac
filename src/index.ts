@@ -20,18 +20,12 @@ export enum ErrorCode {
 }
 
 export enum WorkStatus {
-    // Cleaning
-    RUNNING = 'Running',
-    // Not in the dock, paused
-    STAND_BY = 'standby',
-    // Not in the dock - goes into this state after being paused for a while
-    SLEEPING = 'Sleeping',
-    // In the dock, charging
-    CHARGING = 'Charging',
-    // In the dock, full charged
-    COMPLETED = 'completed',
-    // Going home because battery is depleted or home was pressed
-    RECHARGE_NEEDED = 'Recharge'
+    RUNNING = 'Running', // Cleaning
+    STAND_BY = 'standby', // Not in the dock, paused
+    SLEEPING = 'Sleeping', // Not in the dock - goes into this state after being paused for a while
+    CHARGING = 'Charging', // In the dock, charging
+    COMPLETED = 'completed', // In the dock, full charged
+    RECHARGE_NEEDED = 'Recharge' // Going home because battery is depleted or home was pressed
 }
 
 export enum Direction {
@@ -65,6 +59,13 @@ export interface StatusResponse {
     }
 }
 
+export interface RoboVacConfig {
+    deviceId: string
+    localKey: string
+    ip?: string
+    port?: number
+}
+
 export class RoboVac {
 
     api: any;
@@ -87,7 +88,7 @@ export class RoboVac {
     maxStatusUpdateAge: number = 1000 * (1 * 30); //30 Seconds
     timeoutDuration: number;
 
-    constructor(config: { deviceId: string, localKey: string, ip: string, port: 6668 }, debugLog: boolean = false, timeoutDuration = 2) {
+    constructor(config: RoboVacConfig, debugLog: boolean = false, timeoutDuration = 2) {
         this.debugLog = debugLog;
         if (!config.deviceId) {
             throw new Error('You must pass through deviceId');
@@ -96,7 +97,7 @@ export class RoboVac {
             {
                 id: config.deviceId,
                 key: config.localKey,
-                ip: config.ip,
+                ip: config.ip || 6668,
                 port: config.port,
                 version: '3.3',
                 issueRefreshOnConnect: true
