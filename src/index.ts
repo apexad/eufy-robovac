@@ -97,8 +97,8 @@ export class RoboVac {
             {
                 id: config.deviceId,
                 key: config.localKey,
-                ip: config.ip || 6668,
-                port: config.port,
+                ip: config.ip,
+                port: config.port || 6668,
                 version: '3.3',
                 issueRefreshOnConnect: true
             }
