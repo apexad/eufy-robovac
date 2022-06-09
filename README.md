@@ -37,7 +37,7 @@ npm run build
 npm run demo <deviceId> <localKey> <command>
 ```
 
-Where command is either "quickTest" or "status". The `quickTest` command will:
+Where command is either "quickTest", "drive" or "status". The `quickTest` command will:
 
 * Connect to your device
 * Print out the current statuses
@@ -48,6 +48,19 @@ Where command is either "quickTest" or "status". The `quickTest` command will:
 * Send device home
 * Wait 1 second
 * Disconnect & exit
+
+The `drive` command will:
+
+  * Connect to your device
+  * Drive it backwards
+  * Wait 2 seconds
+  * Turn it left
+  * Wait 2 seconds
+  * Turn it right
+  * Wait 2 seconds
+  * Drive if forward
+  * Wait 2 seconds
+  * Disconnect & exit
 
 The `status` command will simply print out the current statues and exit.
 

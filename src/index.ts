@@ -30,7 +30,7 @@ export enum WorkStatus {
 
 export enum Direction {
     FORWARD = 'forward',
-    BACKWARD = 'backward',
+    BACKWARD = 'back',
     LEFT = 'left',
     RIGHT = 'right'
 }
@@ -265,6 +265,14 @@ export class RoboVac {
         await this.doWork(async () => {
             await this.set({
                 [this.GO_HOME]: true
+            })
+        });
+    }
+
+    async setDirection(direction: Direction) {
+        await this.doWork(async () => {
+            await this.set({
+                [this.DIRECTION]: direction
             })
         });
     }
