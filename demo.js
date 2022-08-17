@@ -8,6 +8,7 @@ if(process.argv.length !== 5) {
 	console.log("");
 	console.log("Available Commands:");
 	console.log("status - Prints current statuses");
+	console.log("drive - Drives your vacuum around");
 	console.log("quickTest - Runs your vacuum for 10 seconds then returns to base");
 	process.exit(0);
 }
@@ -23,6 +24,17 @@ if(process.argv.length !== 5) {
 		if(process.argv[4] === 'status') {
 			await r.getStatuses();
 			r.formatStatus();
+			await r.disconnect();
+		} else if(process.argv[4] === 'drive') {
+			console.log("Demo: drive");
+			await r.setDirection('back');
+			await sleep(2000);
+			await r.setDirection('left');
+			await sleep(2000);
+			await r.setDirection('right');
+			await sleep(2000);
+			await r.setDirection('forward');
+			await sleep(2000);
 			await r.disconnect();
 		} else if(process.argv[4] === 'quickTest') {
 			await r.getStatuses();
